@@ -76,9 +76,8 @@ public class ClientUI extends Application implements EventHandler {
         stage.show();
     }
 
-    /**
-     * Mets l'IHM dans le staut deconnecte
-     */
+    // Mets l'IHM dans le statut deconnecte
+
     public void setDisconnectedState() {
         ip.setDisable(false);
         port.setDisable(false);
@@ -114,7 +113,7 @@ public class ClientUI extends Application implements EventHandler {
     }
 
     /**
-     * Change le ;essage de statut
+     * Change le message de statut
      *
      * @param message
      */
@@ -189,7 +188,7 @@ public class ClientUI extends Application implements EventHandler {
 
         // Envoi du texte si on appui sur entree et que le contenu n est pas vide
         if (event.getCode() == KeyCode.ENTER && input.getText().trim().length() > 0) {
-            this.client.addMessage("" + this.client.nickname + " ecrit : " + input.getText());
+            this.client.addMessage("" + this.client.pseudo + " ecrit : " + input.getText());
             input.setText("");
         }
     }

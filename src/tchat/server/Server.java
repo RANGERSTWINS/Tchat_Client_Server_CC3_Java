@@ -1,7 +1,6 @@
 package tchat.server;
 import tchat.ITchat;
 
-
 import javafx.application.Platform;
 import java.io.IOException;
 import java.nio.channels.ServerSocketChannel;
@@ -24,9 +23,7 @@ import java.util.HashSet;
  */
 public class Server extends Thread implements ITchat {
 
-    /**
-     * Interface graphique du serveur
-     */
+    //Interface graphique du serveur
     private ServerUI serverUI;
     private Charset charset = Charset.forName("UTF-8");
     private String ip;
@@ -62,16 +59,12 @@ public class Server extends Thread implements ITchat {
         }
     }
 
-    /**
-     * Envoi un message de log a l'IHM
-     */
+    // Envoi un message de log a l'IHM
     public void sendLogToUI(String message) {
         Platform.runLater(() -> serverUI.log(message));
     }
 
-    /**
-     * Process principal du server
-     */
+    // Code principal du server
     public void run(){
         try{
         while(serverUI.isRunning()) {
@@ -93,11 +86,10 @@ public class Server extends Thread implements ITchat {
 		
     public void selectionKeyType(ServerSocketChannel scc,SelectionKey sk) throws IOException {
         if(sk.isAcceptable()){
-            //On accepte la connection
+            //Acception de la connection du client
             SocketChannel sc = scc.accept();
             sc.configureBlocking(false);
             sc.register(selector, SelectionKey.OP_READ);
-            
             sk.interestOps(SelectionKey.OP_ACCEPT);
             sendLogToUI("Connection du client sur :" + sc.getRemoteAddress());
         }
@@ -124,9 +116,8 @@ public class Server extends Thread implements ITchat {
         }
     }
 
-//Envoie du message à tout les clients connecté
+    //Envoie du message à tous les clients connectés
     public void BroadCast(String message, Selector selector) throws IOException {
-        //Pour chaque clé utilisé du selecteur, soit chaque client connecté au serveur
         for(SelectionKey key : selector.keys())
         {
             Channel targetchannel = key.channel();

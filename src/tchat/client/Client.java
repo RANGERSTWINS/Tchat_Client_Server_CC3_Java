@@ -20,21 +20,21 @@ public class Client extends Thread implements ITchat {
     private ClientUI clientUI;
     private String hostname;
     private int port;
-    public String nickname;
+    public String pseudo;
     private SocketChannel sc;
-    private Selector selector;
+    private Selector selecteur;
     private Charset charset = Charset.forName("UTF-8");
 
-    public Client(ClientUI clientUI, String hostname, int port, String nickname) {
+    public Client(ClientUI clientUI, String hostname, int port, String pseudo) {
       this.clientUI = clientUI;
       this.hostname = hostname;
       this.port = port;
-      this.nickname = nickname;
+      this.pseudo = pseudo;
       try{
-      selector = Selector.open();
+      selecteur = Selector.open();
       this.sc = SocketChannel.open(new InetSocketAddress(hostname, port));
       sc.configureBlocking(false);
-      sc.register(selector, SelectionKey.OP_READ);
+      sc.register(selecteur, SelectionKey.OP_READ);
     }
       catch(IOException e){
         System.out.println("Exception throw dans le constructeur de la classe client");
@@ -48,13 +48,13 @@ public class Client extends Thread implements ITchat {
      */
     public void addMessage(String message) {
       try {
-        byte[] result = new String(message).getBytes();
-        ByteBuffer buffer = ByteBuffer.wrap(result);
-        buffer.clear();
-        sc.register(selector, SelectionKey.OP_WRITE);
-        buffer.put(message.getBytes());
-        buffer.flip();
-        sc.write(buffer);
+        byte[] res = new String(message).getBytes();
+        ByteBuffer buf = ByteBuffer.wrap(res);
+        buf.clear();
+        sc.register(selecteur, SelectionKey.OP_WRITE);
+        buf.put(message.getBytes());
+        buf.flip();
+        sc.write(buf);
         
       } catch(Exception e){
         System.out.println("Exception throw dans la méthode addMessage de la classe client");
@@ -70,9 +70,9 @@ public class Client extends Thread implements ITchat {
       try
       {
           while(clientUI.isRunning()) {
-              int readyChannels = selector.select();
+              int readyChannels = selecteur.select();
               if(readyChannels == 0) continue; 
-              Set selectedKeys = selector.selectedKeys();
+              Set selectedKeys = selecteur.selectedKeys();
               Iterator keyIterator = selectedKeys.iterator();
               while(keyIterator.hasNext()) {
                    SelectionKey sk = (SelectionKey) keyIterator.next();
@@ -90,12 +90,12 @@ public class Client extends Thread implements ITchat {
       if(sk.isReadable()){
           SocketChannel sc = (SocketChannel)sk.channel();
 
-          ByteBuffer buffer = ByteBuffer.allocate(1024);
+          ByteBuffer buf = ByteBuffer.allocate(1024);
           String message = "";
-          while(sc.read(buffer) > 0)
+          while(sc.read(buf) > 0)
           {
-            buffer.flip();
-            message = message + charset.decode(buffer);
+            buf.flip();
+            message = message + charset.decode(buf);
           }
           clientUI.appendMessage("" + message + "\n");
       }
