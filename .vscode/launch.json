@@ -6,18 +6,18 @@
     "configurations": [
         {
             "type": "java",
-            "name": "ClientUI",
+            "name": "ServerUI",
             "request": "launch",
-            "mainClass": "tchat.client.ClientUI",
-            "projectName": "code_java_321c6346",
+            "mainClass": "tchat.server.ServerUI",
+            "projectName": "Tchat_Client_Server_CC3_Java_5d55b8d7",
             "vmArgs": "--module-path \"C:/Users/seanr/Downloads/javafx-sdk-20.0.2/lib\" --add-modules javafx.controls,javafx.fxml"
         },
         {
             "type": "java",
-            "name": "ServerUI",
+            "name": "ClientUI",
             "request": "launch",
-            "mainClass": "tchat.server.ServerUI",
-            "projectName": "code_java_321c6346",
+            "mainClass": "tchat.client.ClientUI",
+            "projectName": "Tchat_Client_Server_CC3_Java_5d55b8d7",
             "vmArgs": "--module-path \"C:/Users/seanr/Downloads/javafx-sdk-20.0.2/lib\" --add-modules javafx.controls,javafx.fxml"
         },
         {
